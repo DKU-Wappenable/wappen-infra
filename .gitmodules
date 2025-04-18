@@ -1,0 +1,6 @@
+[submodule "fe-wappen-mall"]
+	path = fe-wappen-mall
+	url = https://github.com/DKU-Wappenable/fe-wappen-mall.git
+[submodule "be-wappen-mall"]
+	path = be-wappen-mall
+	url = https://github.com/DKU-Wappenable/be-wappen-mall.git
