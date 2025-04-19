@@ -1,18 +1,19 @@
+version: '3.8'
+
 services:
   # --- Database ---
   db:
     image: mysql:8.0
     container_name: wappen-db-dev
     env_file:
-      - .env  # DB_NAME, DB_USER, DB_PASS 등 정의
+      - .env
     environment:
       MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
+      MYSQL_USER:     ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASS}
       MYSQL_ROOT_PASSWORD: ${DB_PASS}
     volumes:
       - db-data:/var/lib/mysql
-    # 3307 포트 사용 중 -> host 포트 변경
     ports:
       - "3307:3306"
     healthcheck:
@@ -20,25 +21,25 @@ services:
       interval: 3s
       retries: 5
 
-  # --- Backend (Spring Boot) ---
+  # --- Backend (Spring Boot + DevTools) ---
   backend:
     build:
       context: ./be-wappen-mall
       dockerfile: Dockerfile.dev
+    # ← 전체 프로젝트를 /app 에 바인드
     volumes:
       - ./be-wappen-mall:/app:delegated
-      - /var/run/docker.sock:/var/run/docker.sock
       - gradle-cache:/home/gradle/.gradle
-      - backend-build:/app/build
     ports:
       - "8080:8080"
+    entrypoint: ["./entrypoint.sh"]
     user: root
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/${DB_NAME}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: ${DB_USER}
-      SPRING_DATASOURCE_PASSWORD: ${DB_PASS}
-      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQL8Dialect
-      SPRING_DEVTOOLS_COMPOSE_ENABLED: "true"
+      SPRING_DATASOURCE_URL:               jdbc:mysql://db:3306/${DB_NAME}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME:          ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD:          ${DB_PASS}
+      SPRING_JPA_DATABASE_PLATFORM:        org.hibernate.dialect.MySQL8Dialect
+      SPRING_DEVTOOLS_COMPOSE_ENABLED:     "true"
       SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 500
       SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 400
     depends_on:
@@ -53,9 +54,9 @@ services:
     container_name: wappen-fe-dev
     command: sh -c "yarn install --frozen-lockfile && yarn dev --host 0.0.0.0"
     volumes:
-      - ./fe-wappen-mall:/app
+      - ./fe-wappen-mall:/app:delegated
     ports:
-      - "5173:5173" 
+      - "5173:5173"
     environment:
       VITE_API_BASE_URL: http://localhost:8080
     depends_on:
@@ -66,5 +67,3 @@ volumes:
     name: wappen-db-data-dev
   gradle-cache:
     name: wappen-be-gradle-cache-dev
-  backend-build:
-    name: wappen-be-backend-build-dev
