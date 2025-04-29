@@ -33,3 +33,6 @@ Thumbs.db
 # Docker
 Dockerfile*
 # docker-compose*.yml 
+
+# 양상훈 개인 개발환경용 docker-compose override 설정
+docker-compose.override.yml
