@@ -33,6 +33,7 @@ services:
     entrypoint: ["./entrypoint.sh"]
     user: root
     environment:
+      JWT_SECRET: ${JWT_SECRET}
       SPRING_DATASOURCE_URL:               jdbc:mysql://db:3306/${DB_NAME}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME:          ${DB_USER}
       SPRING_DATASOURCE_PASSWORD:          ${DB_PASS}
@@ -50,9 +51,10 @@ services:
       context: ./fe-wappen-mall
       dockerfile: Dockerfile.dev
     container_name: wappen-fe-dev
-    command: sh -c "yarn install --frozen-lockfile && yarn dev --host 0.0.0.0"
+    command: yarn dev --host 0.0.0.0
     volumes:
-      - ./fe-wappen-mall:/app:delegated
+      - ./fe-wappen-mall:/app:delegated       # 소스 코드
+      - /app/node_modules
     ports:
       - "5173:5173"
     environment:
