@@ -1,3 +1,5 @@
+# version: '3.8'
+
 services:
   # --- Database ---
   db:
@@ -27,13 +29,13 @@ services:
     # ← 전체 프로젝트를 /app 에 바인드
     volumes:
       - ./be-wappen-mall:/app:delegated
-      - gradle-cache:/home/gradle/.gradle
+      - gradle-cache:/home/gradle/.gradle 
     ports:
       - "8080:8080"
     entrypoint: ["./entrypoint.sh"]
     user: root
     env_file:
-      - .env         # .env 파일 추가
+      - .env     # .env 파일로부터 변수 읽기  
     environment:
       SPRING_DATASOURCE_URL:               jdbc:mysql://db:3306/${DB_NAME}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME:          ${DB_USER}
@@ -42,7 +44,9 @@ services:
       SPRING_DEVTOOLS_COMPOSE_ENABLED:     "true"
       SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 500
       SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 400
-      JWT_SECRET:                          ${JWT_SECRET}
+      JWT_SECRET: ${JWT_SECRET}
+      IAMPORT_KEY: ${IAMPORT_KEY}
+      IAMPORT_SECRET: ${IAMPORT_SECRET}
     depends_on:
       db:
         condition: service_healthy
