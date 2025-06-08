@@ -41,6 +41,7 @@ services:
       SPRING_DATASOURCE_USERNAME:          ${DB_USER}
       SPRING_DATASOURCE_PASSWORD:          ${DB_PASS}
       SPRING_JPA_DATABASE_PLATFORM:        org.hibernate.dialect.MySQL8Dialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO:       ${DDL_AUTO:-update}  # 기본값 update, 환경변수로 변경 가능
       SPRING_DEVTOOLS_COMPOSE_ENABLED:     "true"
       SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 500
       SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 400

@@ -140,6 +140,16 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "상품 수정 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
           "401": {
             "description": "인증되지 않은 사용자",
             "content": {
@@ -176,16 +186,6 @@
               "*/*": {
                 "schema": {
                   "type": "object"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "상품 수정 성공",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Product"
                 }
               }
             }
@@ -460,22 +460,22 @@
           "required": true
         },
         "responses": {
-          "401": {
-            "description": "잘못된 이메일 또는 비밀번호",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          },
           "200": {
             "description": "로그인 성공",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/TokenResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "잘못된 이메일 또는 비밀번호",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
                 }
               }
             }
@@ -714,16 +714,6 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "상품 등록 성공",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Product"
-                }
-              }
-            }
-          },
           "401": {
             "description": "인증되지 않은 사용자",
             "content": {
@@ -740,6 +730,16 @@
               "*/*": {
                 "schema": {
                   "type": "object"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "상품 등록 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
                 }
               }
             }
